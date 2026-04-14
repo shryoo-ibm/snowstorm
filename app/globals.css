@@ -1,0 +1,33 @@
+.panel-container {
+    display: flex;
+}
+.panel {
+    flex: 1 0 50%;
+}
+
+.test-panel ol {
+    list-style: none;
+}
+
+.test-panel h2,
+.test-panel p {
+    /* margin: 0; */
+}
+
+.accordion-list-item {
+    border: 1px solid green;
+}
+.heading-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.button-wrap {
+    display: flex;
+}
+.accordion-list-item__heading {
+    position: relative;
+}
+.accordion-list-item__button {
+    padding: 1rem;
+}

@@ -1,36 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lazy OOTB Reporter
 
-## Getting Started
+This is a Next.js app which allows for the automated generation of OOTB field analysis information.
 
-First, run the development server:
+## Getting started
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+There are two connections which the application needs in order to generate data, a postgres database and a ServiceNow instance.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environmental variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Start by making a copy of `.env.example` and renaming it to `.env`. In your `.env` file, fill in the login credentials for your ServiceNow instance and your postgres database.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### SNOW connection
 
-## Learn More
+In order to use the ServiceNow API, we need to do some setup on the instance itself. To do this, we need to create a record in the CORS Rules table (`sys_cors_rule`). For the `Name` field, you can really name it anything you want. For the `REST API` field, make sure to select `Table API [now/table]`. In the `Domain`, put `http://localhost:3131`, as this is the address which will be used by our Next.js application. Finally, in the `HTTP methods` section, select only the `GET` method, as our Next.js application will only be reading information from the instance.
 
-To learn more about Next.js, take a look at the following resources:
+### App setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Running the application is very simple. First, navigate to the application folder through your command line tool and run `npm install` to download the dependencies needed, and then use the `npm run dev` command to start the application. Once the application is up and running, you can navigate to it with your browser at `http://localhost:3131`.
