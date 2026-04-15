@@ -11,9 +11,9 @@ addTest("DB2 Subsystem data should be correctly filled in", () => {
 
 addTest("DB2 Database data should be correctly filled in", () => {
     inTable("cmdb_ci_db_db2_catalog").getNumberOfRecords().shouldEqual(52);
-    inTable("cmdb_ci_db_db2_catalog").where("name", "is", "DSN00016").getField("last_discovered").shouldEqual("2025-04-15 08:49:19");
+    inTable("cmdb_ci_db_db2_catalog").where("name", "is", "DSN00016").getField("last_discovered").shouldEqual("2025-04-15 15:49:19");
 });
 
-// addTest("DB2 Database relationships should be correctly created", () => {
-//     inTable("cmdb_rel_ci").getReferenceField("parent", "cmdb_ci").getNumberOfRecords().shouldEqual(900);
-// });
+addTest("DB2 Database relationships should be correctly created", () => {
+    inTable("cmdb_rel_ci").where("child.name", "is", "DSN00001").getNumberOfRecords().shouldBeGreaterThanOrEqualTo(1);
+});

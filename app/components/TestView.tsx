@@ -39,7 +39,7 @@ export const printAssertion = (assertion: Assertion) => {
     }
 }
 
-const SingleAssertion = ({ assertion, i, j, setSelectedResults }: { assertion: Assertion, i: number, j: number, setSelectedResults: (result: null | AssertionResult) => void }) => {
+const SingleAssertion = ({ assertion, testNum, assertionNum, setSelectedResults }: { assertion: Assertion, testNum: number, assertionNum: number, setSelectedResults: (result: null | AssertionResult) => void }) => {
     const [results, setResults] = useState<AssertionResult | null>(null);
     const [expanded, setExpanded] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -47,13 +47,14 @@ const SingleAssertion = ({ assertion, i, j, setSelectedResults }: { assertion: A
         setLoading(true);
         const results = await assertion.evaluate();
         setResults(results);
+        setExpanded(true);
         setLoading(false);
     }
     return (
         <>
             <div className="heading-wrap">
 
-                <h3 id={`accordion-${i}-${j}`} className={`accordion-list-item__heading ${expanded ? "expanded" : "collapsed"}`}>
+                <h3 id={`accordion-${testNum}-${assertionNum}`} className={`accordion-list-item__heading ${expanded ? "expanded" : "collapsed"}`}>
                     {printAssertion(assertion)}
                 </h3>
 
@@ -64,7 +65,7 @@ const SingleAssertion = ({ assertion, i, j, setSelectedResults }: { assertion: A
                     </button>}
 
 
-                    <button type="button" aria-expanded={expanded} aria-controls={`section-${i}-${j}`} onClick={() => setExpanded(!expanded)} className="accordion-list-item__button">
+                    <button type="button" aria-expanded={expanded} aria-controls={`section-${testNum}-${assertionNum}`} onClick={() => setExpanded(!expanded)} className="accordion-list-item__button">
                         Show results
                     </button>
 
@@ -73,21 +74,23 @@ const SingleAssertion = ({ assertion, i, j, setSelectedResults }: { assertion: A
 
             </div>
 
-            <section className="accordion-list-item__expandable-section" aria-labelledby={`accordion-${i}-${j}`} style={{ display: expanded ? "block" : "none" }}>
+            <section className="accordion-list-item__expandable-section" aria-labelledby={`accordion-${testNum}-${assertionNum}`} style={{ display: expanded ? "block" : "none" }}>
                 <h4>Results</h4>
+                <p>{results?.passed ? "PASSED" : "FAILED"}</p>
+                <p>{results?.milliseconds ? "Duration: " + results.milliseconds + "ms" : null}</p>
             </section>
         </>
     )
 }
 
-const SingleTest = ({ test, i, setSelectedResults }: { test: SnowTest, i: number, setSelectedResults: (result: null | AssertionResult) => void }) => {
+const SingleTest = ({ test, testNum, setSelectedResults }: { test: SnowTest, testNum: number, setSelectedResults: (result: null | AssertionResult) => void }) => {
     const [expanded, setExpanded] = useState<boolean>(true);
     return (
         <li className="accordion-list-item">
 
             <div className="heading-wrap">
 
-                <h2 id={`accordion-${i}`} className={`accordion-list-item__heading ${expanded ? "expanded" : "collapsed"}`}>
+                <h2 id={`accordion-${testNum}`} className={`accordion-list-item__heading ${expanded ? "expanded" : "collapsed"}`}>
                     {test.desc}
                 </h2>
 
@@ -101,19 +104,19 @@ const SingleTest = ({ test, i, setSelectedResults }: { test: SnowTest, i: number
                     </button>
 
 
-                    <button type="button" aria-expanded={expanded} aria-controls={`section-${i}`} onClick={() => setExpanded(!expanded)} className="accordion-list-item__button">
+                    <button type="button" aria-expanded={expanded} aria-controls={`section-${testNum}`} onClick={() => setExpanded(!expanded)} className="accordion-list-item__button">
                         Expand
                     </button>
                 </div>
 
             </div>
 
-            <section aria-labelledby={`accordion-${i}`} style={{ display: expanded ? "block" : "none" }} className="accordion-list-item__expandable-section">
+            <section aria-labelledby={`accordion-${testNum}`} style={{ display: expanded ? "block" : "none" }} className="accordion-list-item__expandable-section">
                 <ol>
-                    {test.assertions.map((assertion, j) => {
+                    {test.assertions.map((assertion, assertionNum) => {
                         return (
-                            <li key={`test${i}-assertion${j}`} className="accordion-list-item">
-                                <SingleAssertion assertion={assertion} i={i} j={j} setSelectedResults={setSelectedResults} />
+                            <li key={`test${testNum}-assertion${assertionNum}`} className="accordion-list-item">
+                                <SingleAssertion assertion={assertion} testNum={testNum} assertionNum={assertionNum} setSelectedResults={setSelectedResults} />
                             </li>
                         )
                     })}
@@ -126,9 +129,9 @@ const SingleTest = ({ test, i, setSelectedResults }: { test: SnowTest, i: number
 export const TestView = ({ setSelectedResults }: { setSelectedResults: (result: null | AssertionResult) => void }) => {
     return (
         <ol>
-            {Storm.tests.map((test, i) => {
+            {Storm.tests.map((test, testNum) => {
                 return (
-                    <SingleTest test={test} i={i} key={i} setSelectedResults={setSelectedResults} />
+                    <SingleTest key={testNum} test={test} testNum={testNum} setSelectedResults={setSelectedResults} />
                 );
             })}
         </ol>
