@@ -20,9 +20,9 @@ export const printAssertion = (assertion: Assertion) => {
     if (assertion.assertionSubjectType === AssertionSubjectType.GET_FIELD) {
         return (
             <>
-                <p>
+                <span>
                     In the table <span className="assertion-table-name">{assertion.table}</span>, for all entries {filterString} the field <span className="assert-field-name">{assertion.assertionSubject}</span> should <span className="assert-operation">{operationToNaturalMap[assertion.assertionOperation as Operation]}</span> <span className="assert-value">{assertion.assertionPredicate}</span>
-                </p>
+                </span>
             </>
         )
     }
@@ -30,10 +30,10 @@ export const printAssertion = (assertion: Assertion) => {
 
         return (
             <>
-                <p>
+                <span>
                     In the table <span className="assertion-table-name">{assertion.table}</span>, {filterString} the number of records should <span className="assert-operation">{operationToNaturalMap[assertion.assertionOperation as Operation]}</span> <span className="assert-value">{assertion.assertionPredicate}</span>
 
-                </p>
+                </span>
             </>
         )
     }
@@ -42,9 +42,12 @@ export const printAssertion = (assertion: Assertion) => {
 const SingleAssertion = ({ assertion, i, j, setSelectedResults }: { assertion: Assertion, i: number, j: number, setSelectedResults: (result: null | AssertionResult) => void }) => {
     const [results, setResults] = useState<AssertionResult | null>(null);
     const [expanded, setExpanded] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const runOnClick = async () => {
+        setLoading(true);
         const results = await assertion.evaluate();
         setResults(results);
+        setLoading(false);
     }
     return (
         <>
@@ -56,13 +59,13 @@ const SingleAssertion = ({ assertion, i, j, setSelectedResults }: { assertion: A
 
                 <div className="button-wrap">
 
-
-                    <button onClick={runOnClick} className="accordion-list-item__button accordion-list-item__run-button">
+                    {loading ? "Loading" : <button onClick={runOnClick} className="accordion-list-item__button accordion-list-item__run-button">
                         Run
-                    </button>
+                    </button>}
+
 
                     <button type="button" aria-expanded={expanded} aria-controls={`section-${i}-${j}`} onClick={() => setExpanded(!expanded)} className="accordion-list-item__button">
-                        Expand
+                        Show results
                     </button>
 
 

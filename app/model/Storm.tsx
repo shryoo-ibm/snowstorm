@@ -48,6 +48,11 @@ interface Filter {
     joiner?: "and" | "or";
 }
 
+interface DotChainNode {
+    referenceFieldName: string;
+    nextTable: string;
+}
+
 //companyENDSWITH3^ORnameISNOTEMPTY
 //companyLIKE5^ORnameISNOTEMPTY
 
@@ -86,6 +91,7 @@ export enum AssertionSubjectType {
 export class Assertion {
     table: string;
     filters: Filter[];
+    dotChain: DotChainNode[];
     assertionSubjectType?: AssertionSubjectType;
     assertionOperation: Operation;
     assertionPredicate?: StringOrNumber | StringOrNumber[];
@@ -95,6 +101,15 @@ export class Assertion {
         this.table = table;
         this.filters = [];
         this.assertionOperation = "is";
+        this.dotChain = [];
+    }
+
+    getReferenceField(fieldName: string, tableToSearch: string) {
+        this.dotChain.push({
+            referenceFieldName: fieldName,
+            nextTable: tableToSearch
+        });
+        return this;
     }
 
 
@@ -119,11 +134,47 @@ export class Assertion {
 
 
     async evaluate(): Promise<AssertionResult> {
+        const startTime = performance.now();
         const data = await fetchTable(this.table, filtersToQuery(this.filters));
+        const endTime = performance.now();
+        const timeDiff = endTime - startTime;
+
+        let passed = true;
+        let assertionSubject: StringOrNumber[] = [];
+
+        if (this.assertionSubjectType === AssertionSubjectType.GET_NUM_RECORDS) {
+            assertionSubject = [data.length];
+        }
+        if (this.assertionSubjectType === AssertionSubjectType.GET_FIELD && this.assertionSubject !== undefined) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            assertionSubject = (data as { [key: string]: any }[]).map((record) => record[this.assertionSubject as string]);
+        }
+
+        for (const subj of assertionSubject) {
+            if (this.assertionOperation === "is" && subj != this.assertionPredicate) {
+                passed = false;
+            }
+            if (this.assertionOperation === "between" && Array.isArray(this.assertionPredicate)) {
+                if (subj < this.assertionPredicate[0] || subj > this.assertionPredicate[1]) {
+                    passed = false;
+                }
+            }
+            if (this.assertionOperation === "greater than or equal to" && this.assertionPredicate && subj < this.assertionPredicate) {
+                passed = false;
+            }
+            if (this.assertionOperation === "less than or equal to" && this.assertionPredicate && subj > this.assertionPredicate) {
+                passed = false;
+            }
+            if (this.assertionOperation === "is empty" && subj != "") {
+                passed = false;
+            }
+        }
+
         const result = {
-            passed: true,
+            passed,
             assertion: this,
-            data: data
+            data: data,
+            milliseconds: timeDiff,
         };
         console.log(result);
         return result;
@@ -139,7 +190,7 @@ export class Result {
 }
 
 export class Assertable extends Result {
-    addAssertion() {
+    private addAssertion() {
         if (Storm.tests.length > 0) {
             const currTest = Storm.tests[Storm.tests.length - 1];
             currTest.assertions.push(this.data);
@@ -195,10 +246,13 @@ export class SnowTest {
         this.desc = desc;
         this.assertions = [];
     }
-    runAll() {
+    async runAll() {
+        const results = [];
         for (const assertion of this.assertions) {
-            assertion.evaluate();
+            const result = await assertion.evaluate();
+            results.push(result);
         }
+        return results;
     }
 }
 
