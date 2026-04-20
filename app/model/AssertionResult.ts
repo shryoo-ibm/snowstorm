@@ -6,4 +6,5 @@ export interface AssertionResult {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
     milliseconds: number;
+    lastRun: Date;
 }

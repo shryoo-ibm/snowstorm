@@ -175,6 +175,7 @@ export class Assertion {
             assertion: this,
             data: data,
             milliseconds: timeDiff,
+            lastRun: new Date()
         };
         console.log(result);
         return result;

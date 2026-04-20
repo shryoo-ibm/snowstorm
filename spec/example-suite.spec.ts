@@ -16,4 +16,5 @@ addTest("DB2 Database data should be correctly filled in", () => {
 
 addTest("DB2 Database relationships should be correctly created", () => {
     inTable("cmdb_rel_ci").where("child.name", "is", "DSN00001").getNumberOfRecords().shouldBeGreaterThanOrEqualTo(1);
+    inTable("cmdb_rel_ci").where("child.name", "is", "DSN00001").getNumberOfRecords().shouldEqual(10);
 });
