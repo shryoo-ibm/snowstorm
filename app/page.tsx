@@ -2,11 +2,14 @@
 
 import { Storm } from "./model/Storm";
 
+import { Quicksand } from "next/font/google";
 import "../spec/tests";
 import { TestView } from "./components/TestView";
 import { TableView } from "./components/TableView";
 import { useEffect, useState } from "react";
 import { AssertionResult } from "./model/AssertionResult";
+
+const quicksand = Quicksand({subsets: ['latin']});
 
 export default function Home() {
     const [isClient, setIsClient] = useState(false);
@@ -20,7 +23,7 @@ export default function Home() {
         return "Loading"
     }
     return (
-        <>
+        <div className={quicksand.className}>
             <h1>SnowStorm Tester</h1>
             <div className="panel-container">
 
@@ -31,6 +34,6 @@ export default function Home() {
                     <TestView setSelectedResults={setSelectedResults} />
                 </div>
             </div>
-        </>
+        </div>
     );
 }

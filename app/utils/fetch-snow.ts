@@ -12,15 +12,6 @@ export const fetchTest = async () => {
     console.log("res", data.result);
     return data.result;
 }
-
-const process = {
-    env: {
-        SNOW_INSTANCE: "https://dev352735.service-now.com/",
-        SNOW_USERNAME: "admin",
-        SNOW_PASSWORD: "x7XzNAE!pq6*"
-    }
-}
-
 export const fetchTable = async (tableName: string, queryString: string) => {
     const res = await fetch(`${process.env.SNOW_INSTANCE}api/now/table/${tableName}?sysparm_query=${queryString}`, {
         method: "GET",
