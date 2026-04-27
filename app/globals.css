@@ -14,6 +14,14 @@ html {
     scrollbar-gutter: stable;
 }
 
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--ice-gray);
+}
+
 .panel-container {
     display: flex;
 }
@@ -112,6 +120,15 @@ html {
     /* border: 1px solid blue; */
     color: var(--glacier-blue);
     background: none;
+}
+
+.single-test__heading-flexbox__button-flexbox__run-all:hover {
+    color: black;
+}
+
+.single-assertion__assertion-content__heading-flexbox__button-flexbox__run-button:hover path {
+    fill: black;
+    stroke: black;
 }
 
 .icon--caret-right,
@@ -215,7 +232,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    right: 4rem;
+    right: 5rem;
     position: absolute;
 }
 
