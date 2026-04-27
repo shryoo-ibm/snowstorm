@@ -168,7 +168,7 @@ const SingleAssertion = ({
 
                 </div>
 
-                <section className="single-assertion__assertion-content__expandable-section" aria-labelledby={`accordion-${testNum}-${assertionNum}`} style={{ display: expanded ? "block" : "none" }}>
+                <section className="single-assertion__assertion-content__expandable-section" aria-labelledby={`accordion-${testNum}-${assertionNum}`} style={expanded ? {} : { display: "none" }}>
                     <h4>Results</h4>
                     {results ?
                         (
@@ -279,12 +279,26 @@ const SingleTest = ({
                 <div className="single-test__heading-flexbox__button-flexbox">
 
                     <div className="single-test__heading-flexbox__button-flexbox__assertion-status">
-                        <div className="single-test__heading-flexbox__button-flexbox__assertion-status__number-passing">{numPassing}/{numAssertions} passing</div>
-                        <div className="single-test__heading-flexbox__button-flexbox__assertion-status__number-failing">{numFailed}/{numAssertions} failed</div>
+                        <div className="single-test__heading-flexbox__button-flexbox__assertion-status__number-passing">
+                            <span className="single-test__heading-flexbox__button-flexbox__assertion-status__number-passing__number">
+                                {numPassing}/{numAssertions}
+                            </span>
+                            <span className="single-test__heading-flexbox__button-flexbox__assertion-status__number-passing__text">
+                                passing
+                            </span>
+                        </div>
+                        <div className="single-test__heading-flexbox__button-flexbox__assertion-status__number-failing">
+                            <span className="single-test__heading-flexbox__button-flexbox__assertion-status__number-failing__number">
+                                {numFailed}/{numAssertions}
+                            </span>
+                            <span className="single-test__heading-flexbox__button-flexbox__assertion-status__number-failing__text">
+                                failed
+                            </span>
+                        </div>
                     </div>
 
                     {stillLoading ?
-                        <div className="single-test__heading-flexbox__button-flexbox__loading-icon">
+                        <div className="single-test__heading-flexbox__button-flexbox__loading-container">
                             {IconLoading}
                             <span className="visually-hidden">Loading</span>
                         </div> :

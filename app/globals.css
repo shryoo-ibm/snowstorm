@@ -2,9 +2,12 @@
     font-family: "Quicksand", sans-serif;
     font-weight: 500;
 
-    --glacier-blue: rgb(0, 63, 88);
-    --ice-blue: rgb(223, 234, 255);
+    --glacier-blue: #0b6e95;
+    --ice-blue: rgb(189, 212, 255);
     --ice-gray: rgb(233, 249, 251);
+    --pass-green: rgb(0, 154, 0);
+    --fail-red: rgb(169, 6, 6);
+    --dark-gray: rgb(41, 41, 41);
 }
 
 html {
@@ -26,8 +29,23 @@ html {
     /* background: var(--ice-gray); */
 }
 
+.single-assertion__assertion-content__expandable-section {
+    padding-left: 3rem;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    color: var(--dark-gray);
+}
+
+.single-assertion__assertion-content__expandable-section h4 {
+    font-weight: bold;
+}
+
+.single-assertion__assertion-content__expandable-section p {
+    margin: 0.5rem 0;
+}
+
 .list-level-1 h2,
-.list-level-1 p,
+/* .list-level-1 p, */
 .list-level-1 h3,
 .list-level-1 h4 {
     margin: 0;
@@ -82,7 +100,7 @@ html {
 .single-assertion__assertion-content__heading-flexbox__accordion-expander {
     padding-right: 10rem;
     height: 100%;
-    background: var(--ice-blue);
+    /* background: var(--ice-blue); */
     /* border-bottom: 1px solid var(--glacier-blue); */
 }
 
@@ -98,8 +116,9 @@ html {
 
 .icon--caret-right,
 .icon--caret-down {
-    padding: 0.5rem 1rem;
-    width: 1.75rem;
+    /* padding: 0.5rem 0.75rem; */
+    width: 3rem;
+    /* margin-right: 1rem; */
     height: 1.75rem;
     flex-shrink: 0;
 }
@@ -120,9 +139,10 @@ html {
 }
 
 .icon--loading {
-    animation: spin 3s;
+    animation: spin 3s infinite;
 }
 
+.single-test__heading-flexbox__button-flexbox__loading-container,
 .single-assertion__assertion-content__heading-flexbox__button-flexbox__loading-container {
     width: 4rem;
     padding: 0;
@@ -133,9 +153,19 @@ html {
     align-items: center;
 }
 
-.icon--play-button path {
+.icon--play-button path,
+.icon--loading path {
     stroke: var(--glacier-blue);
     fill: var(--glacier-blue);
+}
+
+.icon--status-passed path {
+    /* stroke: var(--pass-green); */
+    fill: var(--pass-green);
+}
+
+.icon--status-failed path {
+    stroke: var(--fail-red);
 }
 
 .single-test__heading-flexbox__heading .icon {
@@ -171,12 +201,28 @@ html {
     width: 1px;
 }
 
+.single-test__heading-flexbox__button-flexbox__assertion-status__number-failing,
+.single-test__heading-flexbox__button-flexbox__assertion-status__number-passing {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1rem;
+}
+
 .single-test__heading-flexbox__button-flexbox__assertion-status,
 .single-assertion__assertion-content__heading-flexbox__button-flexbox__assertion-status {
-    padding: 1rem;
+    /* padding: 1rem; */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     right: 4rem;
-    width: 10rem;
     position: absolute;
+}
+
+
+.single-test__heading-flexbox__button-flexbox__assertion-status {
+
+    /* width: 10rem; */
 }
 
 .assertion-table-name,
@@ -191,8 +237,12 @@ html {
 .single-assertion {
     display: flex;
     align-items: flex-start;
-    background: var(--ice-blue);
-    border-bottom: 1px solid var(--ice-blue);
+    /* background: var(--ice-blue); */
+    border-top: 1px solid var(--ice-blue);
+}
+
+.single-test {
+    border-top: 2px solid var(--glacier-blue);
 }
 
 .single-assertion__assertion-content {
@@ -205,5 +255,5 @@ html {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    padding-top: 1.75rem;
+    padding-top: 1.25rem;
 }
