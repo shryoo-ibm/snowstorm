@@ -31,9 +31,9 @@ export default function Home() {
     }
     return (
         <div className={quicksand.className}>
-            <h1>SnowStorm Tester</h1>
+
             <div className="instance-details">
-                <div className="instance-details__name">{instanceName}</div>
+                <h1 className="instance-details__name">{instanceName}</h1>
                 <div className="instance-details__version">{instanceVersion}</div>
             </div>
             <div className="panel-container">

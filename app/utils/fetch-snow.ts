@@ -22,7 +22,7 @@ export const fetchStats = async () => {
             instanceName = record.value;
         }
         if (record.name == "glide.war") {
-            instanceVersion = record.value;
+            instanceVersion = record.value.replace(".zip", "");
         }
     }
     return {

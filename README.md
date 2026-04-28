@@ -1,10 +1,8 @@
-# Lazy OOTB Reporter
+# SnowStorm tester
 
-This is a Next.js app which allows for the automated generation of OOTB field analysis information.
+This is an automated tester for verifying ServiceNow data.
 
 ## Getting started
-
-There are two connections which the application needs in order to generate data, a postgres database and a ServiceNow instance.
 
 ### Environmental variables
 
@@ -17,3 +15,7 @@ In order to use the ServiceNow API, we need to do some setup on the instance its
 ### App setup
 
 Running the application is very simple. First, navigate to the application folder through your command line tool and run `npm install` to download the dependencies needed, and then use the `npm run dev` command to start the application. Once the application is up and running, you can navigate to it with your browser at `http://localhost:3131`.
+
+### Editing and adding tests
+
+The application will perform tests which have been imported into `spec/tests.ts`. An example suite is available in the `spec` folder which demonstrates some of the different kinds of assertions that can be created. Try editing the example suite and making your own suites too!
