@@ -6,7 +6,7 @@ This is an automated tester for verifying ServiceNow data.
 
 ### Environmental variables
 
-Start by making a copy of `.env.example` and renaming it to `.env`. In your `.env` file, fill in the login credentials for your ServiceNow instance and your postgres database.
+Start by making a copy of `.env.example` and renaming it to `.env`. In your `.env` file, fill in the login credentials for your ServiceNow instance.
 
 ### SNOW connection
 
